@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Learn Korean - LeKo</title>
+    <link rel="stylesheet" href="style.css?v=20260723-leko-fast-korean-1" />
+  <meta name="almool-device-tool" content="leko" data-legacy="false">
+<link rel="stylesheet" href="record-transfer/style.css">
+<script type="module" src="record-transfer/ui.js"></script></head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">LeKo</div>
+          <div>
+            <h1>Learn Korean - LeKo</h1>
+            <p>한국어를 배우자</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button id="prevBtn" class="icon-button" type="button" title="Previous">
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <button id="nextBtn" class="icon-button" type="button" title="Next">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button id="listenBtn" class="tool-button primary" type="button">
+            <i data-lucide="volume-2" aria-hidden="true"></i>
+            <span>Listen</span>
+          </button>
+          <button id="repeatBtn" class="icon-button" type="button" title="Repeat current sentence">
+            <i data-lucide="repeat" aria-hidden="true"></i>
+          </button>
+          <button id="stopBtn" class="icon-button" type="button" title="Stop">
+            <i data-lucide="square" aria-hidden="true"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="panel library-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Lessons</h2>
+              <p id="itemCount">0 lines</p>
+            </div>
+            <label class="file-button" for="fileInput">
+              <i data-lucide="upload" aria-hidden="true"></i>
+              <span>Upload</span>
+            </label>
+            <input id="fileInput" type="file" accept=".md,.txt,text/markdown,text/plain" />
+          </div>
+
+          <label class="day-select" for="daySelect">
+            <span>Day</span>
+            <select id="daySelect"></select>
+          </label>
+
+          <label class="day-select" for="voiceSelect">
+            <span>Voice</span>
+            <select id="voiceSelect"></select>
+          </label>
+
+          <label class="search-box" for="searchInput">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="Search Korean, meaning, or pronunciation" />
+          </label>
+
+          <div id="itemList" class="item-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="main-column">
+          <section class="panel focus-panel">
+            <div class="practice-head">
+              <div>
+                <p id="currentMeta" class="eyebrow">Lesson</p>
+                <h2>Practice</h2>
+              </div>
+              <button id="modeBtn" class="tool-button compact mode-button" type="button" aria-pressed="false">
+                <i data-lucide="languages" aria-hidden="true"></i>
+                <span>Korean</span>
+              </button>
+            </div>
+
+            <section class="composer" aria-label="Quick phrase builder">
+              <label for="composerInput">
+                <span>Quick phrase</span>
+                <input id="composerInput" type="text" autocomplete="off" placeholder="Type Korean or English" />
+              </label>
+              <div class="composer-actions">
+                <button id="composeBtn" class="tool-button compact primary" type="button">
+                  <i data-lucide="wand-sparkles" aria-hidden="true"></i>
+                  <span>Auto Complete</span>
+                </button>
+                <button id="addComposedBtn" class="tool-button compact" type="button" disabled>
+                  <i data-lucide="list-plus" aria-hidden="true"></i>
+                  <span>Add</span>
+                </button>
+              </div>
+            </section>
+
+            <button id="focusCard" class="focus-card" type="button">
+              <span id="primaryText" class="primary-text"></span>
+              <span id="secondaryText" class="secondary-text"></span>
+              <span id="pronText" class="pron-text"></span>
+            </button>
+
+            <div class="action-strip">
+              <button id="playAllBtn" class="tool-button large" type="button">
+                <i data-lucide="repeat-2" aria-hidden="true"></i>
+                <span>Play From Here</span>
+              </button>
+              <button id="meaningBtn" class="tool-button large" type="button">
+                <i data-lucide="captions" aria-hidden="true"></i>
+                <span>Meaning View</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="panel editor-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Script</h2>
+                <p id="scriptSource"># Korean, * pronunciation - meaning</p>
+              </div>
+              <button id="loadSampleBtn" class="tool-button compact" type="button">
+                <i data-lucide="sparkles" aria-hidden="true"></i>
+                <span>Sample</span>
+              </button>
+            </div>
+            <textarea id="scriptEditor" spellcheck="false"></textarea>
+            <div class="editor-actions">
+              <button id="applyScriptBtn" class="tool-button primary" type="button">
+                <i data-lucide="check" aria-hidden="true"></i>
+                <span>Apply Script</span>
+              </button>
+              <p id="statusLine" role="status"></p>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="app.js?v=20260723-leko-fast-korean-1"></script>
+  </body>
+</html>

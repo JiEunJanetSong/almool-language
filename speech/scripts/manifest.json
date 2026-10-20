@@ -1,0 +1,12 @@
+[
+  {
+    "id": "builtin-khalid-1-1",
+    "name": "Khalid 1-1",
+    "path": "scripts/khalid-1-1.md"
+  },
+  {
+    "id": "builtin-khalid-1-2",
+    "name": "Khalid 1-2",
+    "path": "scripts/khalid-1-2.md"
+  }
+]

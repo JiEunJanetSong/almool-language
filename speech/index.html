@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>English Speech Practice</title>
+    <link rel="stylesheet" href="style.css?v=20260723-builtin-scripts-1" />
+  <meta name="almool-device-tool" content="speech" data-legacy="false">
+<link rel="stylesheet" href="record-transfer/style.css">
+<script type="module" src="record-transfer/ui.js"></script></head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">SP</div>
+          <div>
+            <h1>Speech Practice</h1>
+            <p id="scriptMeta">script.md</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <span id="ttsStatus" class="status-pill">TTS</span>
+          <button id="prevBtn" class="icon-button" type="button" title="이전 문장">
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <button id="nextBtn" class="icon-button" type="button" title="다음 문장">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button id="headerPlayCurrentBtn" class="tool-button" type="button" title="현재 문장 듣기" aria-label="현재 문장 듣기">
+            <i data-lucide="volume-2" aria-hidden="true"></i>
+            <span>현재 듣기</span>
+          </button>
+          <button id="headerLoopCurrentBtn" class="tool-button" type="button" title="현재 문장 계속 반복" aria-label="현재 문장 계속 반복">
+            <i data-lucide="repeat-1" aria-hidden="true"></i>
+            <span>문장 반복</span>
+          </button>
+          <button id="playAllBtn" class="tool-button primary" type="button">
+            <i data-lucide="play" aria-hidden="true"></i>
+            <span>이어 듣기</span>
+          </button>
+          <button id="pauseTtsBtn" class="icon-button" type="button" title="일시정지" disabled>
+            <i data-lucide="pause" aria-hidden="true"></i>
+          </button>
+          <button id="stopTtsBtn" class="icon-button" type="button" title="정지">
+            <i data-lucide="square" aria-hidden="true"></i>
+          </button>
+        </div>
+      </header>
+
+      <nav class="mobile-tabs" aria-label="모바일 보기">
+        <button class="active" type="button" data-mobile-tab="practice">
+          <i data-lucide="volume-2" aria-hidden="true"></i>
+          <span>Practice</span>
+        </button>
+        <button type="button" data-mobile-tab="script">
+          <i data-lucide="scroll-text" aria-hidden="true"></i>
+          <span>Script</span>
+        </button>
+        <button type="button" data-mobile-tab="tts">
+          <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+          <span>TTS</span>
+        </button>
+        <button type="button" data-mobile-tab="record">
+          <i data-lucide="mic" aria-hidden="true"></i>
+          <span>Record</span>
+        </button>
+        <button type="button" data-mobile-tab="feedback">
+          <i data-lucide="chart-no-axes-column" aria-hidden="true"></i>
+          <span>Feedback</span>
+        </button>
+      </nav>
+
+      <main class="workspace">
+        <aside class="panel script-panel" data-mobile-view="script" aria-labelledby="scriptTitle">
+          <div class="panel-head compact">
+            <div>
+              <h2 id="scriptTitle">Script</h2>
+              <p id="scriptCount">0 sentences</p>
+            </div>
+            <div class="view-options" aria-label="표시 옵션">
+              <label>
+                <input id="showPhonetic" type="checkbox" checked />
+                발음
+              </label>
+              <label>
+                <input id="showKorean" type="checkbox" checked />
+                한글
+              </label>
+            </div>
+          </div>
+
+          <label class="search-box" for="scriptSearch">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input id="scriptSearch" type="search" autocomplete="off" placeholder="Search" />
+          </label>
+
+          <section class="script-manager" aria-labelledby="scriptManagerTitle">
+            <div class="script-manager-head">
+              <h3 id="scriptManagerTitle">Script Manager</h3>
+              <button id="formatScriptBtn" class="tool-button compact" type="button">
+                <i data-lucide="wand-sparkles" aria-hidden="true"></i>
+                <span>양식 맞추기</span>
+              </button>
+            </div>
+            <label class="field">
+              <span>Saved Scripts</span>
+              <select id="scriptSelect"></select>
+            </label>
+            <div class="script-manager-actions">
+              <label class="file-button" for="scriptFileInput">
+                <i data-lucide="upload" aria-hidden="true"></i>
+                <span>파일</span>
+              </label>
+              <input id="scriptFileInput" type="file" accept=".md,.txt,text/markdown,text/plain" multiple />
+              <button id="saveScriptBtn" class="tool-button compact" type="button">
+                <i data-lucide="save" aria-hidden="true"></i>
+                <span>저장</span>
+              </button>
+              <button id="deleteScriptBtn" class="icon-button" type="button" title="삭제">
+                <i data-lucide="trash-2" aria-hidden="true"></i>
+              </button>
+            </div>
+            <label class="field script-name-field">
+              <span>Name</span>
+              <input id="scriptNameInput" type="text" autocomplete="off" placeholder="New script" />
+            </label>
+            <textarea id="scriptEditor" class="script-editor" spellcheck="false" placeholder="Paste script text here"></textarea>
+            <p id="scriptManagerStatus" class="status-line" role="status"></p>
+          </section>
+
+          <div id="sentenceList" class="sentence-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="main-column">
+          <section class="panel practice-panel" data-mobile-view="practice" aria-labelledby="practiceTitle">
+            <div class="practice-head">
+              <div>
+                <p id="currentMeta" class="eyebrow">-</p>
+                <h2 id="practiceTitle">Practice</h2>
+              </div>
+              <div class="practice-mode-actions">
+                <button id="languageModeBtn" class="tool-button compact mode-toggle" type="button" aria-pressed="false" title="한국어 설명 읽기 모드로 전환">
+                  <i data-lucide="languages" aria-hidden="true"></i>
+                  <span>영어 읽기</span>
+                </button>
+                <div class="section-chip" id="currentSection">Opening</div>
+              </div>
+            </div>
+
+            <article class="focus-box" aria-live="polite">
+              <p id="currentSentence" class="current-sentence"></p>
+              <p id="currentPhonetic" class="current-phonetic"></p>
+              <p id="currentKorean" class="current-korean"></p>
+              <div id="currentNotes" class="current-notes"></div>
+            </article>
+
+            <section class="practice-selection" aria-label="선택 문장 연습">
+              <div class="practice-selection-head">
+                <div>
+                  <h3>선택 연습</h3>
+                  <p id="selectedPracticeSummary">선택한 문장 없음</p>
+                </div>
+                <button id="clearPracticeSelectionBtn" class="icon-button" type="button" title="선택 비우기" disabled>
+                  <i data-lucide="eraser" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="practice-selection-input">
+                <input id="practiceSelectionInput" type="text" autocomplete="off" placeholder="예: 3, 5, 7-9" />
+                <button id="addPracticeSelectionBtn" class="tool-button" type="button">
+                  <i data-lucide="list-plus" aria-hidden="true"></i>
+                  <span>담기</span>
+                </button>
+              </div>
+              <div class="practice-selection-actions">
+                <button id="toggleCurrentPracticeBtn" class="tool-button" type="button">
+                  <i data-lucide="bookmark-plus" aria-hidden="true"></i>
+                  <span>현재 문장 담기</span>
+                </button>
+                <button id="playSelectedBtn" class="tool-button" type="button" disabled>
+                  <i data-lucide="play" aria-hidden="true"></i>
+                  <span>선택 듣기</span>
+                </button>
+                <button id="repeatSelectedBtn" class="tool-button" type="button" disabled>
+                  <i data-lucide="repeat" aria-hidden="true"></i>
+                  <span>선택 반복</span>
+                </button>
+              </div>
+            </section>
+
+            <div class="action-strip">
+              <button id="playCurrentBtn" class="tool-button primary large" type="button">
+                <i data-lucide="volume-2" aria-hidden="true"></i>
+                <span>듣기</span>
+              </button>
+              <button id="pauseCurrentBtn" class="tool-button large" type="button" disabled>
+                <i data-lucide="pause" aria-hidden="true"></i>
+                <span>일시정지</span>
+              </button>
+              <button id="repeatCurrentBtn" class="tool-button large" type="button">
+                <i data-lucide="repeat" aria-hidden="true"></i>
+                <span>반복</span>
+              </button>
+              <button id="playFromHereBtn" class="tool-button large" type="button">
+                <i data-lucide="list-music" aria-hidden="true"></i>
+                <span>이어 듣기</span>
+              </button>
+            </div>
+            <audio id="ttsAudioPlayer" class="tts-audio-player" controls playsinline></audio>
+          </section>
+
+          <section class="control-grid" aria-label="연습 설정">
+            <div class="panel controls-panel" data-mobile-view="tts">
+              <div class="panel-head compact">
+                <h2>TTS</h2>
+              </div>
+              <div class="settings-grid">
+                <label class="field">
+                  <span>Engine</span>
+                  <select id="engineSelect"></select>
+                </label>
+                <label class="field">
+                  <span>Voice</span>
+                  <select id="voiceSelect"></select>
+                </label>
+                <label class="field">
+                  <span>Speed <strong id="rateValue">0.90x</strong></span>
+                  <input id="rateSlider" type="range" min="0.65" max="1.2" step="0.05" value="0.9" />
+                </label>
+                <label class="field">
+                  <span>Slash</span>
+                  <select id="slashModeSelect">
+                    <option value="smooth" selected>무시</option>
+                    <option value="pause">쉬기</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Pronunciation</span>
+                  <select id="pronunciationModeSelect">
+                    <option value="guided" selected>보정</option>
+                    <option value="plain">원문</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Repeat</span>
+                  <select id="repeatSelect">
+                    <option value="1">1 time</option>
+                    <option value="2">2 times</option>
+                    <option value="3">3 times</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Gap <strong id="pauseValue">0.7s</strong></span>
+                  <input id="pauseSlider" type="range" min="0.1" max="1.5" step="0.1" value="0.7" />
+                </label>
+              </div>
+              <div class="voice-clone" data-public-disabled>
+                <div class="clone-head">
+                  <h3>Voice Clone</h3>
+                  <span id="voiceProfileStatus" class="status-pill">No profile</span>
+                </div>
+                <div class="clone-grid">
+                  <label class="field">
+                    <span>Audio</span>
+                    <input id="refAudioInput" type="file" accept="audio/*" />
+                  </label>
+                  <label class="field ref-text-field">
+                    <span>Reference Text</span>
+                    <textarea id="refTextInput" spellcheck="false"></textarea>
+                  </label>
+                </div>
+                <div class="clone-actions">
+                  <button id="useRecommendedRefBtn" class="tool-button" type="button">
+                    <i data-lucide="text-cursor-input" aria-hidden="true"></i>
+                    <span>추천 문장</span>
+                  </button>
+                  <button id="useCurrentRefBtn" class="tool-button" type="button">
+                    <i data-lucide="file-text" aria-hidden="true"></i>
+                    <span>현재 문장</span>
+                  </button>
+                  <button id="saveVoiceProfileBtn" class="tool-button" type="button">
+                    <i data-lucide="save" aria-hidden="true"></i>
+                    <span>저장</span>
+                  </button>
+                  <audio id="voiceProfilePlayer" controls></audio>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel recording-panel" data-mobile-view="record">
+              <div class="panel-head compact">
+                <h2>Recording</h2>
+                <div class="segmented" role="group" aria-label="평가 범위">
+                  <button class="active" type="button" data-scope="current">현재</button>
+                  <button type="button" data-scope="all">전체</button>
+                </div>
+              </div>
+
+              <div class="record-body">
+                <div id="mobileMicNotice" class="mic-notice" hidden>
+                  <strong>HTTPS required for phone recording</strong>
+                  <span>모바일 브라우저에서 마이크가 막히면 HTTPS 터널이나 인증서가 필요합니다.</span>
+                </div>
+                <div class="meter" aria-hidden="true">
+                  <div id="meterBar"></div>
+                </div>
+                <div class="record-controls">
+                  <button id="startRecordBtn" class="tool-button record" type="button">
+                    <i data-lucide="mic" aria-hidden="true"></i>
+                    <span>녹음</span>
+                  </button>
+                  <button id="stopRecordBtn" class="tool-button" type="button" disabled>
+                    <i data-lucide="circle-stop" aria-hidden="true"></i>
+                    <span>종료</span>
+                  </button>
+                  <div id="recordTimer" class="record-timer">00:00</div>
+                </div>
+                <audio id="recordingPlayer" controls></audio>
+                <p id="statusLine" class="status-line" role="status"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel feedback-panel" data-mobile-view="feedback" aria-labelledby="feedbackTitle">
+            <div class="feedback-summary">
+              <div>
+                <h2 id="feedbackTitle">Feedback</h2>
+                <p id="feedbackScope">현재 문장 기준</p>
+              </div>
+              <div class="score-ring">
+                <span id="scoreValue">--</span>
+              </div>
+              <div class="metrics">
+                <div>
+                  <span>Words</span>
+                  <strong id="wordMetric">--</strong>
+                </div>
+                <div>
+                  <span>Speed</span>
+                  <strong id="speedMetric">--</strong>
+                </div>
+                <div>
+                  <span>Missed</span>
+                  <strong id="missedMetric">--</strong>
+                </div>
+                <div>
+                  <span>Changed</span>
+                  <strong id="changedMetric">--</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="feedback-grid">
+              <label class="transcript-field" for="transcriptBox">
+                <span>Transcript</span>
+                <textarea id="transcriptBox" spellcheck="false"></textarea>
+              </label>
+
+              <div class="feedback-block">
+                <h3>Corrections</h3>
+                <div id="correctionList" class="correction-list empty">녹음 후 표시됩니다.</div>
+              </div>
+
+              <div class="feedback-block">
+                <h3>Focus Words</h3>
+                <div id="focusWords" class="tag-list"></div>
+              </div>
+
+              <div class="feedback-block wide">
+                <h3>Script Match</h3>
+                <div id="alignedText" class="aligned-text"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="script_parser.js?v=20260723-builtin-scripts-1"></script>
+    <script src="practice_selection.js?v=20260723-builtin-scripts-1"></script>
+    <script src="app.js?v=20260723-builtin-scripts-1"></script>
+  </body>
+</html>

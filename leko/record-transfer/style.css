@@ -1,0 +1,10 @@
+.almool-device-records{position:relative;margin:24px auto;padding:16px;max-width:70ch;border:1px solid oklch(80% .008 80);border-radius:8px;background:oklch(97% .008 80);color:oklch(24% .008 80);font:14px/1.6 system-ui,sans-serif}
+.almool-device-records summary{cursor:pointer;font-weight:600}
+.almool-device-records p{max-width:65ch}
+.almool-device-records button,.almool-device-records input{font:inherit;max-width:100%}
+.almool-device-records button{min-height:44px;padding:8px 14px;border:1px solid oklch(65% .008 80);border-radius:6px;background:oklch(99% .005 80);color:inherit;cursor:pointer;margin:0 12px 8px 0}
+.almool-device-records label{display:block;margin-top:12px}
+.almool-device-records input{display:block;padding:8px 0}
+.almool-device-records :focus-visible{outline:2px solid oklch(48% .12 250);outline-offset:3px}
+.almool-device-records button:hover{background:oklch(93% .008 80)}
+.voice-clone[data-public-disabled]{display:none!important}

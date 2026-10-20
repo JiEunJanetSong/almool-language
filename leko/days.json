@@ -1,0 +1,12 @@
+[
+  {
+    "id": "day01",
+    "label": "Day 01",
+    "path": "day01.md"
+  },
+  {
+    "id": "day02",
+    "label": "Day 02",
+    "path": "day02.md"
+  }
+]
