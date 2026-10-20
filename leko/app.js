@@ -212,6 +212,7 @@ function getPreferredKoreanVoice() {
 
 function applyScript(markdown) {
   state.items = parseLeKoScript(markdown);
+  renderDaySelect();
   state.composedItem = null;
   state.currentIndex = Math.min(state.currentIndex, Math.max(0, state.items.length - 1));
   if (els.addComposedBtn) {
@@ -245,8 +246,11 @@ async function loadDays() {
 }
 
 function renderDaySelect() {
-  els.daySelect.innerHTML = state.days
-    .map((day) => `<option value="${escapeHtml(day.id)}">${escapeHtml(day.label)}</option>`)
+  const choices = ["custom", "sample"].includes(state.activeDayId)
+    ? [{ id: state.activeDayId, label: state.activeDayLabel || "Saved script" }, ...state.days]
+    : state.days;
+  els.daySelect.innerHTML = choices
+    .map((day) => `<option value="${escapeHtml(day.id)}"${day.id === state.activeDayId ? " selected" : ""}>${escapeHtml(day.label)}</option>`)
     .join("");
 }
 

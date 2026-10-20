@@ -1,8 +1,8 @@
 {
-  "source_commit": "c771b12c808325221ecab673a367d8934d796b5b",
+  "source_commit": "666587c126db959ac7f6fbaf914f2e3d72d7b497",
   "source_dirty": false,
   "schema_version": 1,
-  "artifact_sha256": "1d74f8a7eabde7671136beb40db5a4c9ea7c97e22b088289c14748c6e52342b1",
+  "artifact_sha256": "0dbad147f137fd80fa3811bcd130466d737b0fa22455ed4f08de6c7021b8a5f9",
   "files": [
     {
       "path": ".nojekyll",
@@ -14,7 +14,7 @@
     },
     {
       "path": "leko/app.js",
-      "sha256": "6606e450843bccbcebd927c8f5243fbaf53ae256859dc8a97fe865a48573a751"
+      "sha256": "1bbcf91728d68b4e2e31d578ed49772ac620c73a79dd80c50818d001c34d3907"
     },
     {
       "path": "leko/day01.md",
